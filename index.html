@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boundary Builder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-emerald-100 via-sky-100 to-indigo-100 p-6 text-slate-900">
+
+  <div class="mx-auto max-w-6xl">
+
+    <div class="rounded-3xl bg-white/80 p-6 shadow-2xl backdrop-blur">
+      <h1 class="text-4xl font-black">🧱 Boundary Builder</h1>
+      <p class="mt-2 text-lg">Learn what boundaries are, how they work, and what to actually say.</p>
+    </div>
+
+    <div id="grid" class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3"></div>
+    <div id="detail" class="mt-6"></div>
+
+  </div>
+
+  <script>
+
+    function make(type, color, border, bg, description, looksLike, problems, examples, questions){
+      return {type, color, border, bg, description, looksLike, problems, examples, questions};
+    }
+
+    const boundaries = {
+
+      "No Boundaries": make("🚫",
+        "bg-gradient-to-br from-gray-300 to-slate-300","border-gray-400","bg-gray-50",
+        "No boundaries means your needs are often ignored, dismissed, or unclear—even to yourself.",
+        ["always saying yes","overextending","ignoring your needs","resentment builds"],
+        ["burnout","resentment","feeling used","loss of identity"],
+        [
+          "I guess that’s fine…",
+          "I’ll just do it",
+          "It’s not a big deal (even when it is)"
+        ],
+        ["Where am I saying yes but meaning no?","What am I afraid would happen if I spoke up?"]
+      ),
+
+      "Weak Boundaries": make("🫠",
+        "bg-gradient-to-br from-yellow-200 to-orange-200","border-yellow-300","bg-yellow-50",
+        "Weak boundaries are unclear, inconsistent, or easily overridden.",
+        ["saying no but giving in","over-explaining","guilt-driven decisions"],
+        ["others don’t take you seriously","internal conflict","stress"],
+        [
+          "I can’t… but maybe later",
+          "I don’t really want to, but okay",
+          "Only this time"
+        ],
+        ["Do I follow through on my boundaries?","Where do I give in quickly?"]
+      ),
+
+      "Rigid Boundaries": make("🧊",
+        "bg-gradient-to-br from-blue-300 to-indigo-300","border-blue-300","bg-blue-50",
+        "Rigid boundaries keep people out to avoid vulnerability or risk.",
+        ["shutting people out","emotional walls","avoiding connection"],
+        ["isolation","difficulty trusting","missed connection"],
+        [
+          "I don’t need anyone",
+          "I’m good on my own",
+          "I don’t let people get close"
+        ],
+        ["What am I protecting myself from?","What would safe connection look like?"]
+      ),
+
+      "Healthy Boundaries": make("🧱",
+        "bg-gradient-to-br from-emerald-300 to-green-300","border-emerald-400","bg-emerald-50",
+        "Healthy boundaries are clear, respectful, and consistent.",
+        ["clear communication","respect for self and others","flexibility"],
+        ["stronger relationships","less resentment","more self-respect"],
+        [
+          "I’m not able to do that",
+          "That doesn’t work for me",
+          "I need some time"
+        ],
+        ["Am I being clear and direct?","Am I respecting my own limits?"]
+      ),
+
+      "Boundary Practice": make("🗣️",
+        "bg-gradient-to-br from-pink-300 to-rose-300","border-pink-300","bg-pink-50",
+        "Practice what to say in real-life situations.",
+        ["work","family","friends","requests","pressure"],
+        ["fear of conflict","guilt","people-pleasing"],
+        [
+          "No, I’m not available",
+          "I can’t commit to that",
+          "I need to take care of something else",
+          "That doesn’t work for me"
+        ],
+        ["What is hardest to say no to?","What feels uncomfortable about setting limits?"]
+      ),
+
+      "Boundary Myths": make("🧠",
+        "bg-gradient-to-br from-purple-300 to-indigo-300","border-purple-300","bg-purple-50",
+        "Common beliefs that make boundaries harder.",
+        ["boundaries are selfish","people will be mad","I’ll lose relationships"],
+        ["guilt","avoidance","resentment"],
+        [
+          "If I say no, they’ll hate me",
+          "Good people always say yes",
+          "I should be able to handle everything"
+        ],
+        ["Is this belief true?","Where did I learn this?","What would a healthier belief be?"]
+      )
+
+    };
+
+    const grid = document.getElementById("grid");
+    const detail = document.getElementById("detail");
+
+    function section(title, items){
+      return `
+        <div class="mt-4">
+          <div class="font-bold">${title}</div>
+          <ul class="ml-5 list-disc">
+            ${items.map(i => `<li>${i}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    function render(name, b){
+      detail.innerHTML = `
+        <div class="p-6 rounded-2xl border-4 ${b.border} ${b.bg}">
+          <h2 class="text-2xl font-bold">${name}</h2>
+          <p class="mt-2">${b.description}</p>
+          ${section("What it looks like", b.looksLike)}
+          ${section("Common problems", b.problems)}
+          ${section("Example language", b.examples)}
+          ${section("Discussion", b.questions)}
+        </div>
+      `;
+    }
+
+    Object.keys(boundaries).forEach(name => {
+      const b = boundaries[name];
+      const btn = document.createElement("button");
+      btn.className = `p-4 rounded-xl border-4 ${b.border} ${b.color} shadow-lg`;
+      btn.innerHTML = `<strong>${b.type} ${name}</strong>`;
+      btn.onclick = () => render(name, b);
+      grid.appendChild(btn);
+    });
+
+    render("Healthy Boundaries", boundaries["Healthy Boundaries"]);
+
+  </script>
+
+</body>
+</html>
